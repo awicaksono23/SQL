@@ -1,0 +1,134 @@
+(PGSQL mengandung case sensitive) 
+(untuk MsSql Server Hampir semua sintak sama, namun MS Sql tidak case sensitive)
+
+**Case sensitive pada PGSQL**
+huruf asli : Credit card
+-SELECT product_name
+from aws 
+where LOWER(product_name) like '%credit%' -->output muncul
+-SELECT product_name
+from aws 
+where product_name like '%credit%' -->tidak muncul output namun jika huruf c dibuat Kapital maka muncul output, seperti ini : %Credit%
+
+Tipe data :
+PGSQL : varchar,integer,float8
+MsSql : varchar(),number,float
+
+-SELECT 
+-WHERE
+-OR
+-AND
+
+1. LIKE,LOWER
+misal : data isue = Late fee
+-select ISSUE
+from consumer_complaints 
+WHERE LOWER(ISSUE) LIKE '%late%' -->output = Late fee
+
+2.LIKE
+-select ISSUE
+from consumer_complaints 
+WHERE ISSUE LIKE '%late%' 
+//tidak keluar output karena data asli huruf mengandung huruf 'L' besar, harus menggunakan LOWER
+
+select ISSUE, zip_code
+from consumer_complaints 
+WHERE zip_code LIKE '__5__'
+//next number, 5 in the midle
+
+select ISSUE, zip_code
+from consumer_complaints 
+WHERE zip_code NOT LIKE '5%'
+//memanggil yg huruf depannya bukan angka 5
+
+SELECT product_name
+from aws 
+where product_name LIKE 'credit_____' -->credit card (under score 5kali atau lebih agar muncul output atau credit%)
+
+**Untuk PgSQL dan MS Sql**
+3. 
+-- Comment
+/* Comment */
+//Untuk Komentar
+
+4. Mengambil seluruh data dari tabel lain
+INSERT INTO aws
+SELECT *
+FROM consumer_complaints
+
+5.count
+SELECT COUNT(state_name)
+from aws
+
+6. menambah column
+alter table console_games
+add column global_sales float8
+
+7. Update
+UPDATE console_games
+SET global_sales = na_sales + eu_sales + other_sales + jp_sales
+
+8. ORDER BY
+-SELECT * 
+FROM console_games
+ORDER BY game_name asc
+
+-SELECT * 
+FROM console_games
+ORDER BY platform asc, game_year
+//Berdasarkan tahun realese
+SELECT * 
+FROM console_games
+ORDER BY platform asc, game_year asc
+//Berdasarkan tahun realese
+
+9. Working with VARCHAR (length,left,right,reverse)
+select game_name, length(game_name) / left / right / reverse
+from console_games
+
+*********UNTUK PgSQL***********
+10. console_dates
+-select first_retail_availability - discontinued as day_existed
+from console_dates
+-select *,(discontinued - first_retail_availability)/365 as day_existed
+from console_dates
+-select *,(discontinued - first_retail_availability)/30 as day_existed
+from console_dates
+ORDER BY day_existed
+
+11. Year, Month, Day
+select *, DATE_PART('year',discontinued) - DATE_PART('year',first_retail_availability) as year_existed
+from console_dates
+ORDER BY year_existed
+// 1996 - 1992 --> outputnya 4
+
+select *
+from console_dates
+where DATE_PART('month',first_retail_availability) - 12 = 0
+//Menampilkan hanya yang memiliki waktu di bulan 12
+
+12. AGE
+SELECT *, AGE(discontinued,first_retail_availability) as platform_alive
+from console_dates
+// 2006-11-19 between 2013-10-30 --> outputnya 6 years 11 months 1 day
+
+13. Data Conversion
+- SELECT CAST(game_year as varchar(4))// game_year::varchar(4)// to_date(CAST(game_year as varchar(4)),'yyyy')
+from console_games
+order by game_rank
+
+14. null, round
+WHERE game_name is null
+//cek apakah nilainya null
+
+*********UNTUK MS SQL***********
+15. Dates (Year, Month, Day) -->J
+
+SELECT *, DATEDIFF(YEAR/MONTH,discontinued,first_retail_availability) as platform_alive
+from console_dates
+// 1996 - 1992 --> outputnya 4
+
+16. Untuk Menampilkan hanya yang memiliki waktu di bulan 12 
+-WHERE DATEPART(MONTH,[nm_table])-12 = 0
+ atau bisa menggunakan
+Like '_____12_____'
