@@ -1,0 +1,3 @@
+COPY consumer_complaints FROM 'C:\Users\Kirill\Desktop\Databases\ConsumerComplaints.csv' DELIMITER ',' CSV HEADER;
+//Buat dulu database dan tabel nya di PG4Admin lalu copy and execute code diatas 
+//Delimiter Dipisah dengan tanda ,
